@@ -2,6 +2,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Babysitter {
+
+    private static final int MIDNIGHT = 12;
+    private static final int MIN_START_TIME = 5;
+    private static final int MAX_END_TIME = 16;
+    private static final int PRE_BEDTIME_PAY = 12;
+    private static final int POST_BEDTIME_PAY = 8;
+    private static final int POST_MIDNIGHT_PAY = 16;
+
     private static Map<Integer, Integer> map = new HashMap() {{
         put(1, 13);
         put(2, 14);
@@ -12,28 +20,11 @@ public class Babysitter {
     public static int calculatePay(int startTime, int bedTime, int endTime) {
         int pay = 0;
         int sTime = map.getOrDefault(startTime, startTime);
-        int bTime = map.getOrDefault(bedTime, bedTime);
         int eTime = map.getOrDefault(endTime, endTime);
 
-        if (sTime == 12) {
-            return (eTime - 12) * 16;
-        }
-
-        // pay between start and bed time
-        pay += (bTime - sTime)*12;
-
-        // pay between bed time and midnight
-        if (eTime > bTime && sTime < 12) {
-            if (eTime > 12 || eTime == 12) {
-                return (12 - sTime) * 8;
-            }
-            pay += (eTime - bTime)*8;
-        }
-
-        // pay after midnight
-        if (sTime > 12) {
-            return (eTime - sTime)*16;
-        }
+        pay += Math.max(Math.min(bedTime, eTime) - Math.max(sTime, MIN_START_TIME), 0) * PRE_BEDTIME_PAY;
+        pay += Math.max(Math.min(MIDNIGHT, eTime) - Math.max(bedTime, sTime), 0) * POST_BEDTIME_PAY;
+        pay += Math.max(Math.min(eTime, MAX_END_TIME) - Math.max(sTime, MIDNIGHT), 0) * POST_MIDNIGHT_PAY;
 
         return pay;
     }
