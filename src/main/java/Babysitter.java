@@ -22,10 +22,17 @@ public class Babysitter {
         int sTime = map.getOrDefault(startTime, startTime);
         int eTime = map.getOrDefault(endTime, endTime);
 
-        pay += Math.max(Math.min(bedTime, eTime) - Math.max(sTime, MIN_START_TIME), 0) * PRE_BEDTIME_PAY;
-        pay += Math.max(Math.min(MIDNIGHT, eTime) - Math.max(bedTime, sTime), 0) * POST_BEDTIME_PAY;
-        pay += Math.max(Math.min(eTime, MAX_END_TIME) - Math.max(sTime, MIDNIGHT), 0) * POST_MIDNIGHT_PAY;
+        pay += determineHoursWorked(eTime, bedTime, MIN_START_TIME, sTime) * PRE_BEDTIME_PAY;
+        pay += determineHoursWorked(MIDNIGHT, eTime, bedTime, sTime) * POST_BEDTIME_PAY;
+        pay += determineHoursWorked(eTime, MAX_END_TIME, sTime, MIDNIGHT) * POST_MIDNIGHT_PAY;
 
         return pay;
+    }
+
+    private static int determineHoursWorked(int minTime1, int minTime2, int maxTime1, int maxTime2){
+        int start = Math.max(maxTime1, maxTime2);
+        int end = Math.min(minTime1, minTime2);
+
+        return Math.max(end - start, 0);
     }
 }
