@@ -20,17 +20,22 @@ public class BabysitterTests {
     }
 
     @Test
-    public void workOneHourBeforeBedtimeAndOneHourAfterBedtimeBeforeMidnight() {
-        assertEquals(12 + 8, Babysitter.calculatePay(8, 9, 10));
-    }
-
-    @Test
     public void workTwoHoursAfterMidnightStartingAtMidnight() {
         assertEquals(16 * 2, Babysitter.calculatePay(12, 8, 2));
     }
 
     @Test
+    public void workOneHourBeforeBedtimeAndOneHourAfterBedtimeBeforeMidnight() {
+        assertEquals(12 + 8, Babysitter.calculatePay(8, 9, 10));
+    }
+
+    @Test
     public void workOneHourBeforeMidnightAfterBedtimeAndOneHourAfterMidnight() {
         assertEquals(16 + 8, Babysitter.calculatePay(11, 8, 1));
+    }
+
+    @Test
+    public void workMaxHoursWithBedtimeAt8() {
+        assertEquals((12 * 3) + (8 * 4) + (16 * 4), Babysitter.calculatePay(5, 8, 4));
     }
 }
