@@ -43,4 +43,9 @@ public class BabysitterTests {
     public void workMoreThanOneHourStartingBeforeBedtimeAndFinishBeforeMidnight() {
         assertEquals(8 * 2, Babysitter.calculatePay(9, 9, 11));
     }
+
+    @Test
+    public void workOneHourBeforeBedtimeAndOneHourAfterBedtimeBeforeMidnight() {
+        assertEquals(12 + 8, Babysitter.calculatePay(8, 9, 10));
+    }
 }
